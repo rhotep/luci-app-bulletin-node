@@ -1,0 +1,12 @@
+#!/bin/sh
+
+touch /etc/config/bulletin-node-clients
+touch /etc/config/bulletin-node
+uci batch << EOF
+	set bulletin-node.main='settings'
+	set bulletin-node.main.active='disabled'
+	set bulletin-node.main.width=300
+	set bulletin-node.main.height=250
+	commit local-ads
+EOF
+

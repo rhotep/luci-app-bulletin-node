@@ -1,0 +1,89 @@
+<%#                                                                                                                                                         
+LuCI - Lua Configuration Interface                                                                                                                          
+Copyright 2008 Steven Barth <steven@midlink.org>                                                                                                            
+Copyright 2008 Jo-Philipp Wich <xm@leipzig.freifunk.net>                                                                                                    
+                                                                                                                                                            
+Licensed under the Apache License, Version 2.0 (the "License");                                                                                             
+you may not use this file except in compliance with the License.                                                                                            
+You may obtain a copy of the License at                                                                                                                     
+                                                                                                                                                            
+        http://www.apache.org/licenses/LICENSE-2.0                                                                                                          
+                                                                                                                                                                     
+                                                                                                                                                            
+-%>    
+
+<%+header%>       
+
+
+<script src="/bulletin-node/bulletin-node.js" type="text/javascript"></script>
+
+
+
+<% 
+
+	local fs 	= require "luci.fs"
+	local util 	= require "luci.util"
+	local uci 	= require "luci.model.uci".cursor()
+
+	local onload_str = ""
+
+	function onload(cmd) 							--prepare js code to be loaded on body.onload
+		cmd = string.gsub(cmd,"\"", "'")	
+		cmd = string.gsub(cmd,"[\n\t]", "")
+		onload_str = onload_str..cmd
+	end
+
+	widgetdir = uci:get("luci", "template", "viewdir") or util.libpath() .. "/view/bulletin-node/widgets"	--watch out! I am not sure if this works if the template /view dir is somewhere else
+
+
+	--[[ todo:widgets should be managed via form
+
+	for key, value in pairs(fs.dir(widgetdir)) do 	--include all templates from the /widgets directory
+		template, count = string.gsub(value, "%.htm$", "")
+		if count == 1 then				
+			include("bulletin-node/widgets/"..template)
+		end	
+	end
+	]]--
+
+%>
+<div id="wrapper">
+	<div id="left-column" class="column">
+		<%+bulletin-node/widgets/host%>		
+	</div>
+	<div id="right-column" class="column">
+		<%+bulletin-node/widgets/alias%>
+		<%+bulletin-node/widgets/clients%>
+	</div>
+	<div id="center-column" class="column">
+		<%+bulletin-node/widgets/chat%>
+	</div>
+
+	<div id="bottom-column" class="column">
+		<%+bulletin-node/widgets/neighbors%>
+	</div>
+
+	<%
+
+		jsdir = uci:get("uhttpd", "main", "home").."/bulletin-node/widgets" or "/www/bulletin-node/widgets"
+
+		for key, value in pairs(fs.dir(jsdir)) do		--fetch all widget scripts
+			src = string.match(value, ".*%.js$")
+			if src ~= nil then 	
+	%>
+	<script type="text/javascript" src="/bulletin-node/widgets/<%=src%>"></script>	
+	<%
+			end
+		end
+
+		onload("init();")
+
+	%>
+
+	<script type="text/javascript">
+			document.getElementsByTagName("body")[0].setAttribute("onload", "<%=onload_str%>");
+	</script>
+
+</div>
+
+<%+footer%>     
