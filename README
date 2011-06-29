@@ -1,0 +1,17 @@
+Luci Bulletinseite
+
+- neighbors
+- post_chat get_chat_log
+
+Add as feed in OPENWRT build
+
+git clone git://github.com/rhotep/luci-app-bulletin-node.git
+svn co svn://svn.openwrt.org/openwrt/branches/backfire backfire
+
+cd backfire
+echo "src-link bulletin ../luci-app-bulletin-node" >> feeds.conf
+scripts/feeds update
+scripts/feeds install -a
+make menuconfig
+make V=99 world
+
