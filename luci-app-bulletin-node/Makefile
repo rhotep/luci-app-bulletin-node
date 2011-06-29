@@ -20,8 +20,8 @@ define Package/luci-app-bulletin-node/description
 endef
 
 define Build/Prepare
-	mkdir -p $(PKG_BUILD_DIR)/files
-	cp -a ../files/* $(PKG_BUILD_DIR)/files
+	mkdir -p $(PKG_BUILD_DIR)
+	cp -a ../* $(PKG_BUILD_DIR)
 endef
 
 define Build/Configure
