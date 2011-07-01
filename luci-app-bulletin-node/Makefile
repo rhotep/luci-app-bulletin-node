@@ -33,10 +33,10 @@ endef
 
 define Package/luci-app-bulletin-node/install
 	$(INSTALL_DIR) $(1)/usr/lib/lua/luci
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/luasrc/* $(1)/usr/lib/lua/luci
+	$(CP) $(PKG_BUILD_DIR)/luasrc/* $(1)/usr/lib/lua/luci
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/uci-defaults/* $(1)/etc/uci-defaults
-	$(INSTALL_DIR) $(1)/www/luci-static
+	$(CP) $(1)/www
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/htdocs/* $(1)/www
 endef
 
