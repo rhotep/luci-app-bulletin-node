@@ -36,8 +36,8 @@ define Package/luci-app-bulletin-node/install
 	$(CP) $(PKG_BUILD_DIR)/luasrc/* $(1)/usr/lib/lua/luci
 	$(INSTALL_DIR) $(1)/etc/uci-defaults
 	$(INSTALL_DATA) $(PKG_BUILD_DIR)/uci-defaults/* $(1)/etc/uci-defaults
-	$(CP) $(1)/www
-	$(INSTALL_DATA) $(PKG_BUILD_DIR)/htdocs/* $(1)/www
+	$(INSTALL_DIR) $(1)/www
+	$(CP) $(PKG_BUILD_DIR)/htdocs/* $(1)/www
 endef
 
 $(eval $(call BuildPackage,luci-app-bulletin-node))
