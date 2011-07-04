@@ -11,7 +11,7 @@ svn co svn://svn.openwrt.org/openwrt/branches/backfire backfire
 cd backfire
 echo "src-link bulletin ../luci-app-bulletin-node" >> feeds.conf
 scripts/feeds update
-scripts/feeds install -a
+scripts/feeds install -p bulletin -a
 make menuconfig
 make V=99 world
 
